@@ -105,7 +105,7 @@ void Quicksort<type>::Quicksort_Random()
 		{
 			std::vector<int> vec; 									    // deklaracja wektora 
 			vec.resize(vecSize);  									    // nadanie wielkości wygenerowanemu wektorowi
-			std::generate(vec.begin(), vec.end(), std::rand);           // generowanie losowych << std::endl wartości funkcją rand 
+			std::generate(vec.begin(), vec.end(), std::rand);           // generowanie losowych wartości funkcją rand 
 		
 			for(int i=0; i<vecSize; ++i)  								// uruchomiona pętla dla każdego z rodzajów tablicy
 			{															// pętla generuje randomowe elementy
