@@ -72,7 +72,7 @@ void Introsort<type>::insertsort(int left, int right)
 template<typename type>
 type Introsort<type>::FindPivot(type &a, type &b, type &c)
 {
-	type x = a - b;
+    type x = a - b;
     type y = b - c;
     type z = a - c;
     if(x*y > 0)  return b;
