@@ -162,13 +162,9 @@ void Introsort<type>::hybridsort(int maxDepth, int left, int right)
 		else
 		{	
 			if(right <= left) return;
-
 			int pivot = FindPivot(arrayTab[left], arrayTab[(right+left)/2], arrayTab[right] );
-			
 			if(arrayTab[left]==pivot) swap(arrayTab[left], arrayTab[(right+left)/2] );
 			if(arrayTab[right]==pivot) swap(arrayTab[right], arrayTab[(right+left)/2] );
-			
-
 			int i = left;	                             							
 			int j = right;                             
 			bool flag = true;
