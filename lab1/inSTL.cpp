@@ -68,7 +68,6 @@ int main()
 	cout << endl;	
 
 
-	myList.~list();
 	cout << endl << "List test ended" << endl << endl;
 
 
@@ -95,7 +94,6 @@ int main()
 		cout << "Popped " << myStack.top() <<endl;
 		myStack.pop();
 	}
-	myStack.~stack();
 	cout << endl << "Stack test ended" << endl << endl;
 
 
@@ -122,7 +120,6 @@ int main()
 	myQueue.pop();
 	cout << "First element is: " << myQueue.front() <<endl;
 	cout << "Size of queue: " << myQueue.size() <<endl;
-	myQueue.~queue();
 	cout << endl << "Queue test ended" << endl << endl;
 
 
@@ -150,7 +147,6 @@ int main()
 		cout << "Popped " << myPrior.top() << endl;
 		myPrior.pop();
 	}
-	myPrior.~priority_queue();
 	cout << endl << "Priority Queue test ended" << endl << endl;
 
 
@@ -171,6 +167,5 @@ int main()
 	cout << "fruits[1]: " << fruits[1] << endl; 
 
 	cout << endl << "Map test ended" << endl << endl;
-	fruits.~map();
 	
 }
