@@ -6,9 +6,6 @@
 using namespace std;
 
 
-/*****************************
-sorry for the huge amount of variables and leaks, but this is just a test
-*************************/
 
 int main()
 {
