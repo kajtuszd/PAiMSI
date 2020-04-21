@@ -130,11 +130,6 @@ void Mergesort<type>::Mergesort_Random()
 			std::vector<int> vec; 									    
 			vec.resize(vecSize);  									  
 			std::generate(vec.begin(), vec.end(), std::rand);           
-		
-			for(int i=0; i<vecSize; ++i)  								
-			{														
-				vec[i] = vec[i]%1000;
-			}
 			
 			setArray(vec);
 			timer.start();
