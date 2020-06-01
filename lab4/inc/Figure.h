@@ -37,7 +37,6 @@ public:
 	sf::Texture tex;
 	std::string name;
 
-
 	Figure(){};
 	void setWhite(bool color){this->white = color;};
 	bool isWhite(){return this->white == true;};
@@ -46,15 +45,13 @@ public:
 	Spot getVector(Board board, Spot begin, Spot end);
 	virtual bool canMove(Board board, Spot begin, Spot end) = 0;
 	virtual std::vector<Move> possibleMoves(Board board, Spot begin) = 0;
-
+	std::vector<Move> returnFreeColsRows(Board &board, Spot &begin);
+	std::vector<Move> returnFreeDiagonals(Board &board, Spot &begin);
 
 	virtual ~Figure(){};
 	void loadTex();
 	bool testColsAndRows(Board board, Spot begin, Spot end);
 	bool testDiagonals(Board board, Spot begin, Spot end);
-	bool isFieldChecked(Board board, Spot begin, Spot checked);
-
-
 
 
 };

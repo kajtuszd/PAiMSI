@@ -1,3 +1,4 @@
+#include "Spot.h"
 #include "Move.h"
 
 
@@ -27,7 +28,5 @@ void Move::setEnd(int y, int x)
 }
 
 
-
-
-
-
+Spot Move::getBegin(){return this->begin;}
+Spot Move::getEnd(){return this->end;}

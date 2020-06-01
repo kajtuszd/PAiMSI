@@ -59,44 +59,29 @@ std::vector<Move> Knight::possibleMoves(Board board, Spot begin)
 	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  // kolor ruszanego konia
 	
 	Spot spots[8];
+
 	Spot spot0(begin.x+2, begin.y+1); spots[0] = spot0;
 	Spot spot1(begin.x+1, begin.y+2); spots[1] = spot1;
-
 	Spot spot2(begin.x+2, begin.y-1); spots[2] = spot2;
 	Spot spot3(begin.x-1, begin.y+2); spots[3] = spot3;
-	
 	Spot spot4(begin.x-2, begin.y-1); spots[4] = spot4;
 	Spot spot5(begin.x-1, begin.y-2); spots[5] = spot5;
-	
 	Spot spot6(begin.x-2, begin.y+1); spots[6] = spot6;
 	Spot spot7(begin.x+1, begin.y-2); spots[7] = spot7;
 
+
 	for (int i = 0; i < 8; ++i)
 	{
-		if(board.getBox(spots[i].x, spots[i].y).isEmpty() || board.getBox(spots[i].x, spots[i].y).getFigure()->white != color)
+		if(spots[i].x>=0 && spots[i].y>=0  && spots[i].x<8 && spots[i].y<8)
 		{
-			Move move(color,begin,spots[i]);
-			allowedMoves.push_back(move);
+			if(board.getBox(spots[i].x, spots[i].y).isEmpty() || board.getBox(spots[i].x, spots[i].y).getFigure()->white != color)
+			{
+				Move move(color,begin,spots[i]);
+				allowedMoves.push_back(move);
+			}
 		}
-
 	}
 
-	// Spot spot(begin.x+2, begin.y+1);
-	// if(board.getBox(spot.x, spot.y).isEmpty() || board.getBox(spot.x, spot.y).getFigure()->color != color)
-	// 	allowedMoves.push_back(spot);
-	// Spot spot(begin.x+1, begin.y+2);
-
-	// Spot spot(begin.x+2, begin.y-1);
-	// Spot spot(begin.x-1, begin.y+2);
-	
-	// Spot spot(begin.x-2, begin.y-1);
-	// Spot spot(begin.x-1, begin.y-2);
-	
-	// Spot spot(begin.x-2, begin.y+1);
-	// Spot spot(begin.x+1, begin.y-2);
-
-	// Move move(color, begin, spot);
-	// if()
 	return allowedMoves;
 }
 
@@ -114,9 +99,212 @@ bool Rook::canMove(Board board, Spot begin, Spot end)
 	return false;
 }
 
-std::vector<Move> Rook::possibleMoves(Board board, Spot begin)
+std::vector<Move> Figure::returnFreeDiagonals(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves;
+	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  
+	bool flag = true;
+	int i = begin.x;
+	int j = begin.y;
+	while(i>0 && j>0 && flag)
+	{
+		i--; j--;
+		if(board.getBox(i,j).isEmpty() && flag == true)
+		{
+			Spot spot(i,j);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(i,j).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(i,j).getFigure()->white != color)
+			{
+				Spot spot(i,j);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
+	flag = true;
+	i = begin.x;
+	j = begin.y;
+	while(i<7 && j<7 && flag)
+	{
+		i++; j++;
+		if(board.getBox(i,j).isEmpty() && flag == true)
+		{
+			Spot spot(i,j);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(i,j).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(i,j).getFigure()->white != color)
+			{
+				Spot spot(i,j);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
+	flag = true;
+	i = begin.x;
+	j = begin.y;
+	while(i>0 && j<7 && flag)
+	{
+		i--; j++;
+		if(board.getBox(i,j).isEmpty() && flag == true)
+		{
+			Spot spot(i,j);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(i,j).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(i,j).getFigure()->white != color)
+			{
+				Spot spot(i,j);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
+	flag = true;
+	i = begin.x;
+	j = begin.y;
+	while(i<7 && j>0 && flag)
+	{
+		i++; j--;
+		if(board.getBox(i,j).isEmpty() && flag == true)
+		{
+			Spot spot(i,j);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(i,j).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(i,j).getFigure()->white != color)
+			{
+				Spot spot(i,j);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+	return allowedMoves;
+}
+
+
+std::vector<Move> Figure::returnFreeColsRows(Board &board, Spot &begin)
+{
+	std::vector<Move> allowedMoves;
+	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  
+	bool flag = true;
+	int i = begin.x;
+	while(i>0 && flag)
+	{
+		i--;
+		if(board.getBox(i,begin.y).isEmpty() && flag == true)
+		{
+			Spot spot(i,begin.y);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(i,begin.y).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(i,begin.y).getFigure()->white != color)
+			{
+				Spot spot(i,begin.y);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
+	i = begin.x;
+	flag = true;
+	while(i<7 && flag)
+	{
+		i++;
+		if(board.getBox(i,begin.y).isEmpty() && flag == true)
+		{
+			Spot spot(i,begin.y);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(i,begin.y).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(i,begin.y).getFigure()->white != color)
+			{
+				Spot spot(i,begin.y);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
+	i = begin.y;
+	flag = true;
+	while(i>0 && flag)
+	{
+		i--;
+		if(board.getBox(begin.x,i).isEmpty() && flag == true)
+		{
+			Spot spot(begin.x,i);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(begin.x,i).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(begin.x,i).getFigure()->white != color)
+			{
+				Spot spot(begin.x,i);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
+	i = begin.y;
+	flag = true;
+	while(i<7 && flag)
+	{
+		i++;
+		if(board.getBox(begin.x,i).isEmpty() && flag == true)
+		{
+			Spot spot(begin.x,i);
+			Move move(color,begin,spot);
+			allowedMoves.push_back(move);
+		}
+		if(!board.getBox(begin.x,i).isEmpty())
+		{
+			flag = false;
+			if(board.getBox(begin.x,i).getFigure()->white != color)
+			{
+				Spot spot(begin.x,i);
+				Move move(color,begin,spot);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+	return allowedMoves;
+}
+
+
+
+std::vector<Move> Rook::possibleMoves(Board board, Spot begin)
+{
+	std::vector<Move> allowedMoves = returnFreeColsRows(board,begin);
 	return allowedMoves;
 }
 
@@ -215,6 +403,12 @@ bool Queen::canMove(Board board, Spot begin, Spot end)
 std::vector<Move> Queen::possibleMoves(Board board, Spot begin)
 {
 	std::vector<Move> allowedMoves;
+	std::vector<Move> vec2;
+
+	allowedMoves = returnFreeDiagonals(board,begin);
+	vec2 = returnFreeColsRows(board,begin);
+	allowedMoves.insert(allowedMoves.end(), vec2.begin(), vec2.end());
+
 	return allowedMoves;	
 }
 
@@ -233,7 +427,7 @@ bool Bishop::canMove(Board board, Spot begin, Spot end)
 
 std::vector<Move> Bishop::possibleMoves(Board board, Spot begin)
 {
-	std::vector<Move> allowedMoves;
+	std::vector<Move> allowedMoves = returnFreeDiagonals(board,begin);
 	return allowedMoves;
 }
 
@@ -296,64 +490,86 @@ bool Pawn::canMove(Board board, Spot begin, Spot end)
 std::vector<Move> Pawn::possibleMoves(Board board, Spot begin)
 {
 	std::vector<Move> allowedMoves;
+	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  
+
+	Spot spot1 = board.getBox(begin.getX(),begin.getY()-1); // do przodu czarny
+	Spot spot2 = board.getBox(begin.getX(),begin.getY()+1); // do przodu bialy
+
+	if(!board.getBox(begin.x,begin.y).getFigure()->isWhite())
+	{
+		if(spot1.isEmpty())
+		{
+			Move move(color,begin,spot1);
+			allowedMoves.push_back(move);
+		}
+		if(begin.getX() != 7)
+		{
+			Spot spot3 = board.getBox(begin.getX()+1,begin.getY()-1);
+			if(!spot3.isEmpty() && spot3.getFigure()->isWhite())
+			{
+				Move move(color,begin,spot3);
+				allowedMoves.push_back(move);
+			}
+		}
+		if(begin.getX() != 0)
+		{
+			Spot spot4 = board.getBox(begin.getX()-1,begin.getY()-1);
+			if(!spot4.isEmpty() && spot4.getFigure()->isWhite())
+			{
+				Move move(color,begin,spot4);
+				allowedMoves.push_back(move);
+			}
+		}
+
+		if(hasMoved == false && spot1.isEmpty())
+		{
+			Spot spot7 = board.getBox(begin.getX(),begin.getY()-2); // do przodu czarny
+			Move move(color,begin,spot7);
+			allowedMoves.push_back(move);
+		}
+
+	}
+	
+	if(board.getBox(begin.x,begin.y).getFigure()->isWhite())
+	{
+		
+		if(spot2.isEmpty())
+		{
+			Move move(color,begin,spot2);
+			allowedMoves.push_back(move);
+		}
+		
+		if(begin.getX() != 7)
+		{
+			Spot spot5 = board.getBox(begin.getX()+1,begin.getY()+1);
+			if(!spot5.isEmpty() && !spot5.getFigure()->isWhite())
+			{
+				Move move(color,begin,spot5);
+				allowedMoves.push_back(move);
+			}
+		}
+		if(begin.getX() != 0)
+		{
+			Spot spot6 = board.getBox(begin.getX()-1,begin.getY()+1);
+			if(!spot6.isEmpty() && !spot6.getFigure()->isWhite())
+			{
+				Move move(color,begin,spot6);
+				allowedMoves.push_back(move);
+			}
+		}
+
+		if(hasMoved == false && spot2.isEmpty())
+		{
+			Spot spot8 = board.getBox(begin.getX(),begin.getY()+2); // do przodu bialy
+			Move move(color,begin,spot8);			
+			allowedMoves.push_back(move);
+		}
+
+	}
 	return allowedMoves;
 }
 
 
-bool Figure::isFieldChecked(Board board, Spot begin, Spot checked)
-{
-	if(begin.getFigure()->name == "king")
-		return false;
-
-	if(begin.getFigure()->isWhite()) /* jezeli figura jest biala */
-	{
-		for (int i = 0; i < 8; ++i)
-		{                                 /* sprawdzenie kazdej figury na szachownicy */
-			for (int j = 0; j < 8; ++j)
-			{
-				if(!board.getBox(i,j).isEmpty())     /* jezeli sprawdzane pole nie jest puste */
-				{
-					if(!board.getBox(i,j).getFigure()->isWhite() && board.getBox(i,j).getFigure()->name != "king" ) 
-					{
-						if(board.getBox(i,j).getFigure()->canMove(board, board.getBox(i,j), checked))
-						{
-							std::cout << " checked by " << board.getBox(i,j).getFigure()->name << std::endl;
-							return true;
-						}
-
-					}
-
-				}
-			}
-		}
-	}
-
-	if(!begin.getFigure()->isWhite()) /* jezeli figura jest czarna */
-	{
-		for (int i = 0; i < 8; ++i)
-		{                                 /* sprawdzenie kazdej figury na szachownicy */
-			for (int j = 0; j < 8; ++j)
-			{
-				if(!board.getBox(i,j).isEmpty())   /* jezeli sprawdzane pole nie jest puste */
-				{
-					if(board.getBox(i,j).getFigure()->isWhite() && board.getBox(i,j).getFigure()->name != "king")
-					{
-						if(board.getBox(i,j).getFigure()->canMove(board, board.getBox(i,j), checked))
-						{
-							std::cout << " checked by " << board.getBox(i,j).getFigure()->name << std::endl;
-							return true;
-						}
-
-					}
-
-				}
-			}
-		}
-	}
-
-	return false;
-
-}
 
 
 
@@ -386,6 +602,32 @@ bool King::canMove(Board board, Spot begin, Spot end)
 std::vector<Move> King::possibleMoves(Board board, Spot begin)
 {
 	std::vector<Move> allowedMoves;
+	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  // kolor ruszanego konia
+	
+	Spot spots[8];
+
+	Spot spot0(begin.x+1, begin.y-1); spots[0] = spot0;
+	Spot spot1(begin.x+1, begin.y);   spots[1] = spot1;
+	Spot spot2(begin.x+1, begin.y+1); spots[2] = spot2;
+	Spot spot3(begin.x,   begin.y+1); spots[3] = spot3;
+	Spot spot4(begin.x,   begin.y-1); spots[4] = spot4;
+	Spot spot5(begin.x-1, begin.y-1); spots[5] = spot5;
+	Spot spot6(begin.x-1, begin.y);   spots[6] = spot6;
+	Spot spot7(begin.x-1, begin.y+1); spots[7] = spot7;
+
+
+	for (int i = 0; i < 8; ++i)
+	{
+		if(spots[i].x>=0 && spots[i].y>=0  && spots[i].x<8 && spots[i].y<8)
+		{
+			if(board.getBox(spots[i].x, spots[i].y).isEmpty() || board.getBox(spots[i].x, spots[i].y).getFigure()->white != color)
+			{
+				Move move(color,begin,spots[i]);
+				allowedMoves.push_back(move);
+			}
+		}
+	}
+
 	return allowedMoves;
 }
 

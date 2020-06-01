@@ -21,6 +21,7 @@ const sf::Vector2f freeSpace(28,28);
 
 class Spot;
 class Figure;
+class Move;
 
 class Board
 {

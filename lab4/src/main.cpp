@@ -43,15 +43,36 @@ int main()
 
     std::vector<sf::Sprite> greenFrames;   
     std::vector<sf::Sprite> redFrames;  
-    game.printPossibleMoves(1);
-
+//    game.printPossibleMoves(1);
+    Board brrd = game.getBoard();
+    std::cout << "mozliwe ruchy krola" << std::endl;
+    std::cout << "skad  dokad  gracz" << std::endl;
+    int licznik = 0;
+    for (int i = 0; i < 8; ++i)
+    {
+        for (int j = 0; j < 8; ++j)
+        {
+            if(!brrd.getBox(i,j).isEmpty())
+            {
+                if(brrd.getBox(i,j).getFigure()->name == "king")
+                {
+                    Spot sss = game.getBoard().getBox(i,j);
+                    std::vector<Move> vctt = game.getBoard().getBox(i,j).getFigure()->possibleMoves(brrd,sss);
+                    for (std::vector<Move>::iterator i = vctt.begin(); i != vctt.end(); ++i)
+                    {
+                        Spot sp1, sp2;
+                        sp1 = i->getBegin();
+                        sp2 = i->getEnd();
+                        licznik ++;
+                        std::cout << " " << sp1.x << " " << sp1.y << "   " << sp2.x << " " << sp2.y << "     " << i->getPlayer() << std::endl;
+                    }
+                }
+            }
+        }
+    }
+    std::cout << licznik << " moves available" << std::endl;
 
     sf::RenderWindow window(sf::VideoMode(504,504),"Chess");
-    Spot spp;
-    spp.x = 0;
-    spp.y = 1;
-    Board b = game.getBoard();
-    std::vector<Move> v = game.getBoard().getBox(0,1).getFigure()->possibleMoves(b,spp);
 
     
 
@@ -156,6 +177,34 @@ int main()
                         //game.printPossibleMoves(1);
 
 		                isMoved = true;
+                        Board brrd = game.getBoard();
+                        std::cout << "mozliwe ruchy krola" << std::endl;
+                        std::cout << "skad  dokad  gracz" << std::endl;
+                        int licznik = 0;
+                        for (int i = 0; i < 8; ++i)
+                        {
+                            for (int j = 0; j < 8; ++j)
+                            {
+                                if(!brrd.getBox(i,j).isEmpty())
+                                {
+                                    if(brrd.getBox(i,j).getFigure()->name == "king")
+                                    {
+                                        Spot sss = game.getBoard().getBox(i,j);
+                                        std::vector<Move> vctt = game.getBoard().getBox(i,j).getFigure()->possibleMoves(brrd,sss);
+                                        for (std::vector<Move>::iterator i = vctt.begin(); i != vctt.end(); ++i)
+                                        {
+                                            Spot sp1, sp2;
+                                            sp1 = i->getBegin();
+                                            sp2 = i->getEnd();
+                                            licznik++;
+                                            std::cout << " " << sp1.x << " " << sp1.y << "   " << sp2.x << " " << sp2.y << "     " << i->getPlayer() << std::endl;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        std::cout << licznik << " moves available" << std::endl;
+
                     }
 
             	}   

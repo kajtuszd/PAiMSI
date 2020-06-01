@@ -16,9 +16,10 @@ class Move
 public:
 	Move(){};
 	Move(bool player, Spot begin, Spot end);
-	Spot getBegin(){return this->begin;};
-	Spot getEnd(){return this->end;};
+	Spot getBegin();
+	Spot getEnd();
 	void setPlayer(bool player_){this->player = player_;};
+	bool getPlayer(){return this->player;};
 	void setBegin(int y, int x);
 	void setEnd(int y, int x);
 

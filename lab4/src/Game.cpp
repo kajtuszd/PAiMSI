@@ -107,7 +107,7 @@ bool Game::makeMove()
 	return true;
 }
 
-
+/*
 std::vector<Spot> Game::returnPlacesFigureCanMove(Figure *&selected)
 {
 	std::vector<Spot> places;
@@ -129,6 +129,42 @@ std::vector<Spot> Game::returnPlacesFigureCanMove(Figure *&selected)
 
 	return places;
 }
+*/
+std::vector<Spot> Game::returnPlacesFigureCanMove(Figure *&selected)
+{
+	std::vector<Spot> places;
+
+	Spot begin = this->actualMove.getBegin();
+	Board brd = this->getBoard();
+	std::vector<Move> vec = selected->possibleMoves(brd,begin);
+	for (std::vector<Move>::iterator i = vec.begin(); i != vec.end(); ++i)
+	{
+		Spot s = i->getEnd();
+		if(brd.getBox(s.x,s.y).isEmpty())
+		{
+			places.push_back(brd.getBox(s.x,s.y));
+		}
+
+//		places.push_back( i->getEnd() );
+	}
+
+/*	for (int i = 0; i < boardLength; ++i) 
+	{
+		for (int j = 0; j < boardLength; ++j)
+		{
+			Spot end = this->getBoard().getBox(i,j);
+
+			if(selected->canMove(this->getBoard(), begin, end) && end.isEmpty())
+			{
+				places.push_back(end);
+			}
+		}
+	}
+*/
+	return places;
+}
+
+
 
 void Game::readPlacesFigureCanMove(std::vector<Spot> &places)
 {
@@ -136,28 +172,51 @@ void Game::readPlacesFigureCanMove(std::vector<Spot> &places)
 }
 
 
+// std::vector<Spot> Game::returnPlacesFigureCanCapture(Figure *&selected)
+// {
+// 	std::vector<Spot> places;
+
+// 	Spot begin = this->actualMove.getBegin();
+
+// 	for (int i = 0; i < boardLength; ++i) 
+// 	{
+// 		for (int j = 0; j < boardLength; ++j)
+// 		{
+// 			Spot end = this->getBoard().getBox(i,j);
+
+// 			if(selected->canMove(this->getBoard(), begin, end) && !end.isEmpty())
+// 			{
+// 				places.push_back(end);
+// 			}
+// 		}
+// 	}
+
+// 	return places;
+// }
+
+
 std::vector<Spot> Game::returnPlacesFigureCanCapture(Figure *&selected)
 {
 	std::vector<Spot> places;
-
+	bool color = selected->white;
 	Spot begin = this->actualMove.getBegin();
-
-	for (int i = 0; i < boardLength; ++i) 
+	Board brd = this->getBoard();
+	std::vector<Move> vec = selected->possibleMoves(brd,begin);
+	for (std::vector<Move>::iterator i = vec.begin(); i != vec.end(); ++i)
 	{
-		for (int j = 0; j < boardLength; ++j)
-		{
-			Spot end = this->getBoard().getBox(i,j);
+		Spot sp = i->getEnd();
 
-			if(selected->canMove(this->getBoard(), begin, end) && !end.isEmpty())
+		if(!brd.getBox(sp.x,sp.y).isEmpty())
+		{
+			if(brd.getBox(sp.x,sp.y).getFigure()->white != color)
 			{
-				places.push_back(end);
+				places.push_back( brd.getBox(sp.x,sp.y));
 			}
 		}
 	}
-
 	return places;
-}
 
+}
 
 std::vector<sf::Vector2f> Game::changeSpotsToVectors(std::vector<Spot> &v)
 {
