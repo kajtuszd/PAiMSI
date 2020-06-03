@@ -92,6 +92,9 @@ public:
 	King(bool color);
 	virtual bool canMove(Board board, Spot begin, Spot end);
 	virtual std::vector<Move> possibleMoves(Board board, Spot begin);
+	bool isValidShortCastling(Board &board);
+	bool isValidLongCastling(Board &board);
+
 	~King(){};
 
 };

@@ -44,6 +44,7 @@ public:
 	std::vector<Spot> returnPlacesFigureCanCapture(Figure *&selected);
 	std::vector<sf::Sprite> getRedFrames(std::vector<sf::Vector2f> frameVectors);
 	void readPlacesFigureCanMove(std::vector<Spot> &places);
+	void doCastling(Spot &start, Spot &end, Figure *&moved);
 
 	bool isMoveValid();
 	Spot returnWhiteKingSpot();
@@ -51,7 +52,8 @@ public:
 	bool isWhiteKingChecked();
 	bool isBlackKingChecked();
 	std::vector<Move> returnPossibleMoves(bool color);
-	void printPossibleMoves(bool color);
+
+	void initializeAI();
 
 
 

@@ -38,62 +38,6 @@ bool Game::isMoveValid()
 }
 
 
-std::vector<Move> Game::returnPossibleMoves(bool color)
-{
-	Board brd = this->getBoard();
-	std::vector<Move> possibleMoves;
-
-
-	for (int i = 0; i < boardLength; ++i)
-	{
-		for (int j = 0; j < boardLength; ++j)
-		{
-			if(!this->getBoard().getBox(i,j).isEmpty())
-			{
-				if(this->getBoard().getBox(i,j).getFigure()->white == color)
-				{
-					Spot begin = this->getBoard().getBox(i,j);
-
-					for (int x = 0; x < boardLength; ++x)
-					{
-						for (int y = 0; y < boardLength; ++y)
-						{
-							Spot end = this->getBoard().getBox(x,y);
-							if(this->getBoard().getBox(i,j).getFigure()->canMove(brd,begin,end))
-							{
-								Move move(color,begin,end);
-								possibleMoves.push_back(move);
-							}
-						
-						}
-					}
-
-				}
-
-			}
-		}
-	}
-
-	return possibleMoves;
-}
-
-void Game::printPossibleMoves(bool color)
-{
-	int k = 1;
-	std::vector<Move> mv = std::move(this->returnPossibleMoves(color));
-	for (std::vector<Move>::iterator i = mv.begin(); i != mv.end(); ++i)
-	{
-		Spot sp;
-		Spot s;
-		sp = i->getBegin();
-		s = i->getEnd();
-		std::cout << k << "  x: "<< sp.x << "   y: "  << sp.y << "   to   " << s.x << " " << s.y << " " 
-		<< this->getBoard().getBox(sp.x,sp.y).getFigure()->name << " " << this->getBoard().getBox(sp.x,sp.y).getFigure()->white << std::endl;
-		k++;
-	}
-}
-
-
 
 bool Game::makeMove()
 {
@@ -101,35 +45,103 @@ bool Game::makeMove()
 	Spot end = actualMove.getEnd();
 
 	Figure *moved = this->getBoard().getBox(start.x,start.y).getFigure();
+
+	sf::Vector2f spritePos = moved->picture.getPosition();     
 	
-	this->getBoard().moveFigure(start, end, moved);
+	Move move(moved->white,start,end);
+
+	this->getBoard().moveFigure(move,moved);
+
+	this->getBoard().getBox(end.x,end.y).getFigure()->picture.setPosition(spritePos);  
+
+	if(moved->name == "king" && abs(start.x - end.x) == 2)
+		this->doCastling(start,end,moved);
 
 	return true;
 }
 
-/*
-std::vector<Spot> Game::returnPlacesFigureCanMove(Figure *&selected)
+
+
+void Game::doCastling(Spot &start, Spot &end, Figure *&moved)
 {
-	std::vector<Spot> places;
+	if(end.x == 2 && end.y == 7) // dluga roszada biala
+	{
+		Spot finish(3,7);
+		Spot start(0,7);
+		Figure* rook = this->getBoard().getBox(0,7).getFigure();
+		bool color = this->getBoard().getBox(0,7).getFigure()->white;
+		Move move(color,start,finish);
+		this->getBoard().moveFigure(move, rook);
+		rook->picture.setPosition(56*finish.x+28,56*finish.y+28);		
+	}	
+	if(end.x == 6 && end.y == 7) // krotka roszada biala
+	{
+		Spot finish(5,7);
+		Spot start(7,7);
+		Figure* rook = this->getBoard().getBox(7,7).getFigure();
+		bool color = this->getBoard().getBox(0,7).getFigure()->white;
+		Move move(color,start,finish);		
+		this->getBoard().moveFigure(move, rook);
+		rook->picture.setPosition(56*finish.x+28,56*finish.y+28);
+	}
+	if(end.x == 2 && end.y == 0) // krotka roszada czarna
+	{
+		Spot finish(3,0);
+		Spot start(0,0);
+		Figure* rook = this->getBoard().getBox(0,0).getFigure();
+		bool color = this->getBoard().getBox(0,7).getFigure()->white;
+		Move move(color,start,finish);		
+		this->getBoard().moveFigure(move, rook);
+		rook->picture.setPosition(56*finish.x+28,56*finish.y+28);
+	}
+	if(end.x == 6 && end.y == 0) // dluga roszada czarna
+	{
+		Spot finish(5,0);
+		Spot start(7,0);
+		Figure* rook = this->getBoard().getBox(7,0).getFigure();
+		bool color = this->getBoard().getBox(0,7).getFigure()->white;
+		Move move(color,start,finish);				
+		this->getBoard().moveFigure(move, rook);
+		rook->picture.setPosition(56*finish.x+28,56*finish.y+28);
+	}
 
-	Spot begin = this->actualMove.getBegin();
+	return;
+}
 
-	for (int i = 0; i < boardLength; ++i) 
+void Game::initializeAI()
+{
+	Board board(this->getBoard());
+	AI opponent(board);
+	std::vector<Move> vec = opponent.returnPossibleMoves(1,opponent.startboard);
+	opponent.printAllowedMoves(vec,opponent.startboard);
+}
+
+std::vector<Move> Game::returnPossibleMoves(bool color)
+{
+	std::vector<Move> allowedMoves;
+	std::vector<Move> toInsert;
+	Board brd = this->getBoard();
+	for (int i = 0; i < boardLength; ++i)
 	{
 		for (int j = 0; j < boardLength; ++j)
 		{
-			Spot end = this->getBoard().getBox(i,j);
-
-			if(selected->canMove(this->getBoard(), begin, end) && end.isEmpty())
+			if(!brd.getBox(i,j).isEmpty())
 			{
-				places.push_back(end);
+				if(brd.getBox(i,j).getFigure()->white == color)
+				{
+					Spot begin(i,j);
+					toInsert = std::move(brd.getBox(i,j).getFigure()->possibleMoves(brd,begin));
+                    allowedMoves.insert(allowedMoves.end(), toInsert.begin(), toInsert.end());
+				}
 			}
 		}
 	}
-
-	return places;
+	this->getBoard().possibleMoves = std::move(allowedMoves);
+	return allowedMoves;
 }
-*/
+
+
+
 std::vector<Spot> Game::returnPlacesFigureCanMove(Figure *&selected)
 {
 	std::vector<Spot> places;
@@ -145,22 +157,8 @@ std::vector<Spot> Game::returnPlacesFigureCanMove(Figure *&selected)
 			places.push_back(brd.getBox(s.x,s.y));
 		}
 
-//		places.push_back( i->getEnd() );
 	}
 
-/*	for (int i = 0; i < boardLength; ++i) 
-	{
-		for (int j = 0; j < boardLength; ++j)
-		{
-			Spot end = this->getBoard().getBox(i,j);
-
-			if(selected->canMove(this->getBoard(), begin, end) && end.isEmpty())
-			{
-				places.push_back(end);
-			}
-		}
-	}
-*/
 	return places;
 }
 
@@ -172,27 +170,6 @@ void Game::readPlacesFigureCanMove(std::vector<Spot> &places)
 }
 
 
-// std::vector<Spot> Game::returnPlacesFigureCanCapture(Figure *&selected)
-// {
-// 	std::vector<Spot> places;
-
-// 	Spot begin = this->actualMove.getBegin();
-
-// 	for (int i = 0; i < boardLength; ++i) 
-// 	{
-// 		for (int j = 0; j < boardLength; ++j)
-// 		{
-// 			Spot end = this->getBoard().getBox(i,j);
-
-// 			if(selected->canMove(this->getBoard(), begin, end) && !end.isEmpty())
-// 			{
-// 				places.push_back(end);
-// 			}
-// 		}
-// 	}
-
-// 	return places;
-// }
 
 
 std::vector<Spot> Game::returnPlacesFigureCanCapture(Figure *&selected)

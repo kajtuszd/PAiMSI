@@ -26,7 +26,6 @@ class Move;
 class Board
 {
 	sf::Texture board_tex;
-	Spot *boxes[boardLength][boardLength];
 
 	sf::Texture red_texture;
 	sf::Texture yellow_texture;
@@ -36,14 +35,18 @@ class Board
 	sf::Sprite greenFrame;
 	sf::Sprite redFrame;
 
+	Spot *boxes[boardLength][boardLength];
 
 
 public:
 	
+	std::vector<Move> possibleMoves;
+
 	sf::Sprite board_spr;
 	void setBoard();
 	Spot getBox(int y, int x);
-	void moveFigure(Spot begin, Spot end, Figure *&f);
+	void moveFigure(Move &move, Figure* &f);
+
 	void printLegend();
 	sf::Sprite getSprite(int y, int x);
 	void loadBoardPic();

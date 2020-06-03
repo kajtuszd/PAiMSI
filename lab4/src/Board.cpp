@@ -14,13 +14,6 @@ Spot Board::getBox(int y, int x)
 }
 
 
-
-
-
-
-
-
-
 bool Board::cleanEndField(Spot end)
 {
 	if(!this->getBox(end.x,end.y).isEmpty())
@@ -207,14 +200,15 @@ void Board::swapPawn(Spot &spot, Figure *&f, int num)
 
 
 
-
-
-void Board::moveFigure(Spot begin, Spot end, Figure *&f)   /* utworzenie calkowicie nowego obiektu */
+void Board::moveFigure(Move &move, Figure *&f)   /* utworzenie calkowicie nowego obiektu */
 {
+	Spot end = move.getEnd();
+	Spot begin = move.getBegin();
+
+	std::cout << "nie wyrzuca" << std::endl;
+	
 	delete boxes[end.x][end.y]->getFigure();      /* wyczyszczenie poczatkowego pola */
 	delete boxes[begin.x][begin.y]->getFigure();  /* wyczyszczenie koncowego pola */
-
-	sf::Vector2f move = f->picture.getPosition();     
 
 
 	if(f->name == "queen")
@@ -227,9 +221,15 @@ void Board::moveFigure(Spot begin, Spot end, Figure *&f)   /* utworzenie calkowi
 	if(f->name == "king")
 	{
 		if(f->isWhite())
+		{
 			boxes[end.x][end.y]->figure = new King(true);
+			boxes[end.x][end.y]->figure->hasMoved = true;		
+		}
 		else
+		{
 			boxes[end.x][end.y]->figure = new King(false);
+			boxes[end.x][end.y]->figure->hasMoved = true;			
+		}
 	}
 	if(f->name == "bishop")
 	{
@@ -262,14 +262,20 @@ void Board::moveFigure(Spot begin, Spot end, Figure *&f)   /* utworzenie calkowi
 	if(f->name == "rook")
 	{
 		if(f->isWhite())
+		{
 			boxes[end.x][end.y]->figure = new Rook(true);
+			boxes[end.x][end.y]->figure->hasMoved = true;
+		}
 		else
+		{
 			boxes[end.x][end.y]->figure = new Rook(false);
+			boxes[end.x][end.y]->figure->hasMoved = true;
+		}
 	}
 
-	boxes[end.x][end.y]->getFigure()->picture.setPosition(move);  
+	std::cout << "wyrzuca" << std::endl;
+	boxes[begin.x][begin.y]->figure = NULL;  
 
-	boxes[begin.x][begin.y]->figure = NULL;   
 
 }
 
@@ -369,6 +375,7 @@ void Board::setPositionsOnBoard()
 		}
 	}
 }
+
 
 
 
