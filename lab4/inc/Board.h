@@ -55,12 +55,12 @@ public:
 	sf::Sprite getYellowFrame(){return this->yellowFrame;};
 	sf::Sprite getGreenFrame(){return this->greenFrame;};
 	sf::Sprite getRedFrame(){return this->redFrame;};
-	sf::Vector2f adjustFrameSize(sf::Vector2f vector);
+	sf::Vector2f adjustFrameSize(sf::Vector2f &vector);
 	void setFrames();
 	std::list <Figure*> returnFigures();
 	void printFigures();
-	bool cleanEndField(Spot end);
-	void chooseFigureToSwap(Figure* fig, int &number);
+	bool cleanEndField(Spot &end);
+	void chooseFigureToSwap(Figure* &fig, int &number);
 	void swapPawn(Spot &spot, Figure *&f, int num);
 	std::vector<sf::FloatRect> initializeSwapVectors();
 	std::list <Figure*> returnFigures(bool color);

@@ -1,7 +1,5 @@
 Czwarty projekt na PAMSI.
 
-Prototyp gry w szachy.
-
 Sterowanie:
 Prawy przycisk myszy - wybranie figury
 Lewy przycisk myszy - upuszczenie figury w wybranym miejscu

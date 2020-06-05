@@ -1,7 +1,7 @@
 #include "Figure.h"
 
 
-Spot Figure::getVector(Board board, Spot begin, Spot end) 
+Spot Figure::getVector(Board &board, Spot &begin, Spot &end) 
 {
 	Spot spot;
 
@@ -12,14 +12,14 @@ Spot Figure::getVector(Board board, Spot begin, Spot end)
 }
 
 
-std::vector<Move> Rook::possibleMoves(Board board, Spot begin)
+std::vector<Move> Rook::possibleMoves(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves = returnFreeColsRows(board,begin);
 	return allowedMoves;
 }
 
 
-std::vector<Move> King::possibleMoves(Board board, Spot begin)
+std::vector<Move> King::possibleMoves(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves;
 	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  // kolor ruszanego konia
@@ -173,7 +173,7 @@ bool King::isValidLongCastling(Board &board)
 
 
 
-std::vector<Move> Knight::possibleMoves(Board board, Spot begin)
+std::vector<Move> Knight::possibleMoves(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves;
 	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  // kolor ruszanego konia
@@ -206,14 +206,14 @@ std::vector<Move> Knight::possibleMoves(Board board, Spot begin)
 }
 
 
-std::vector<Move> Bishop::possibleMoves(Board board, Spot begin)
+std::vector<Move> Bishop::possibleMoves(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves = returnFreeDiagonals(board,begin);
 	return allowedMoves;
 }
 
 
-std::vector<Move> Queen::possibleMoves(Board board, Spot begin)
+std::vector<Move> Queen::possibleMoves(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves;
 	std::vector<Move> vec2;
@@ -228,7 +228,7 @@ std::vector<Move> Queen::possibleMoves(Board board, Spot begin)
 
 
 
-std::vector<Move> Pawn::possibleMoves(Board board, Spot begin)
+std::vector<Move> Pawn::possibleMoves(Board &board, Spot &begin)
 {
 	std::vector<Move> allowedMoves;
 	bool color = board.getBox(begin.x,begin.y).getFigure()->white;  
@@ -313,7 +313,7 @@ std::vector<Move> Pawn::possibleMoves(Board board, Spot begin)
 
 
 
-bool Rook::canMove(Board board, Spot begin, Spot end)
+bool Rook::canMove(Board &board, Spot &begin, Spot &end)
 {
 	if(begin.getX() == end.getX() && begin.getY() == end.getY())
 		return false;
@@ -329,7 +329,7 @@ bool Rook::canMove(Board board, Spot begin, Spot end)
 
 
 
-bool Knight::canMove(Board board, Spot begin, Spot end)
+bool Knight::canMove(Board &board, Spot &begin, Spot &end)
 {
 	if(begin.getX() == end.getX() && begin.getY() == end.getY())
 		return false;
@@ -579,7 +579,7 @@ std::vector<Move> Figure::returnFreeColsRows(Board &board, Spot &begin)
 
 
 
-bool Figure::testColsAndRows(Board board, Spot begin, Spot end)
+bool Figure::testColsAndRows(Board &board, Spot &begin, Spot &end)
 {    
     if (begin.getX() == end.getX())
     { 
@@ -621,7 +621,7 @@ bool Figure::testColsAndRows(Board board, Spot begin, Spot end)
 }
 
 
-bool Figure::testDiagonals(Board board, Spot begin, Spot end)
+bool Figure::testDiagonals(Board &board, Spot &begin, Spot &end)
 {
 	if (abs(begin.getX() - end.getX()) == abs(begin.getY() - end.getY()))  /* jezeli to jest przekatna kwadratu */
 	{
@@ -656,7 +656,7 @@ bool Figure::testDiagonals(Board board, Spot begin, Spot end)
 
 
 
-bool Queen::canMove(Board board, Spot begin, Spot end)
+bool Queen::canMove(Board &board, Spot &begin, Spot &end)
 {
 
 	if(begin.getX() == end.getX() && begin.getY() == end.getY())
@@ -672,7 +672,7 @@ bool Queen::canMove(Board board, Spot begin, Spot end)
 
 
 
-bool Bishop::canMove(Board board, Spot begin, Spot end)
+bool Bishop::canMove(Board &board, Spot &begin, Spot &end)
 {
 	if(begin.getX() == end.getX() && begin.getY() == end.getY())
 		return false;
@@ -689,7 +689,7 @@ bool Bishop::canMove(Board board, Spot begin, Spot end)
 
 
 
-bool Pawn::canMove(Board board, Spot begin, Spot end)
+bool Pawn::canMove(Board &board, Spot &begin, Spot &end)
 {
 	if(begin.getX() == end.getX() && begin.getY() == end.getY())
 		return false;
@@ -749,7 +749,7 @@ bool Pawn::canMove(Board board, Spot begin, Spot end)
 
 
 
-bool King::canMove(Board board, Spot begin, Spot end)
+bool King::canMove(Board &board, Spot &begin, Spot &end)
 {
 
 	if(begin.getX() == end.getX() && begin.getY() == end.getY())
@@ -809,6 +809,7 @@ Rook::Rook(bool color)
 	points = ROOK;
 	this->name = "rook";
 	loadTex();
+
 	if(!this->isWhite())
 		this->picture.setTextureRect(sf::IntRect(0,56,56,56));
 	else

@@ -150,7 +150,7 @@ int main()
 		                game.getBoard().printFigures();
 
 		                isMoved = true;
-                        game.initializeAI(); //////////////////////////
+                    //    game.initializeAI(); //////////////////  sztuczna inteligencja
 
                     }
 

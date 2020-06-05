@@ -40,9 +40,9 @@ public:
 	void readHumanEndSpot(int x, int y);
 	std::vector<Spot> returnPlacesFigureCanMove(Figure *&selected);
 	std::vector<sf::Vector2f> changeSpotsToVectors(std::vector<Spot> &v);
-	std::vector<sf::Sprite> getGreenFrames(std::vector<sf::Vector2f> frameVectors);
+	std::vector<sf::Sprite> getGreenFrames(std::vector<sf::Vector2f> &frameVectors);
 	std::vector<Spot> returnPlacesFigureCanCapture(Figure *&selected);
-	std::vector<sf::Sprite> getRedFrames(std::vector<sf::Vector2f> frameVectors);
+	std::vector<sf::Sprite> getRedFrames(std::vector<sf::Vector2f> &frameVectors);
 	void readPlacesFigureCanMove(std::vector<Spot> &places);
 	void doCastling(Spot &start, Spot &end, Figure *&moved);
 

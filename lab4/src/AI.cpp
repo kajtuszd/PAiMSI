@@ -1,7 +1,7 @@
 #include "AI.h"
 
 
-TreeNode::TreeNode(int depth, Board brd, bool side, Move mv)
+TreeNode::TreeNode(int depth, Board &brd, bool side, Move mv)
 {
 	board = brd;
 	isCpu = side;
@@ -30,7 +30,7 @@ TreeNode::TreeNode(int depth, Board brd, bool side, Move mv)
 
 
 
-TreeNode::TreeNode(int depth, Board brd, bool side)
+TreeNode::TreeNode(int depth, Board &brd, bool side)
 {
 	board = brd;
 	isCpu = side;
@@ -60,7 +60,7 @@ TreeNode::TreeNode(int depth, Board brd, bool side)
 
 
 
-AI::AI(Board board)
+AI::AI(Board &board)
 {
 	this->startboard = board;
 	TreeNode tree(1,this->startboard,1);

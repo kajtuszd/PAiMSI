@@ -17,8 +17,8 @@ struct TreeNode
 	std::vector<TreeNode> sons;
 	std::vector<Move> returnPossibleMoves(bool color, Board &board);
 
-	TreeNode(int depth, Board brd, bool side, Move move);
-	TreeNode(int depth, Board brd, bool side);
+	TreeNode(int depth, Board &brd, bool side, Move move);
+	TreeNode(int depth, Board &brd, bool side);
 
 };
 
@@ -28,7 +28,7 @@ class AI
 	
 public:
 	Board startboard;
-	AI(Board board);
+	AI(Board &board);
 
 	std::vector<Move> returnPossibleMoves(bool color, Board &board);
 	void printAllowedMoves(std::vector<Move> &allowedMoves, Board &board);

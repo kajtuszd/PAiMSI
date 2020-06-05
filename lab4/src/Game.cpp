@@ -112,8 +112,8 @@ void Game::initializeAI()
 {
 	Board board(this->getBoard());
 	AI opponent(board);
-	std::vector<Move> vec = opponent.returnPossibleMoves(1,opponent.startboard);
-	opponent.printAllowedMoves(vec,opponent.startboard);
+//	std::vector<Move> vec = opponent.returnPossibleMoves(1,opponent.startboard);
+//	opponent.printAllowedMoves(vec,opponent.startboard);
 }
 
 std::vector<Move> Game::returnPossibleMoves(bool color)
@@ -211,7 +211,7 @@ std::vector<sf::Vector2f> Game::changeSpotsToVectors(std::vector<Spot> &v)
 }
 
 
-std::vector<sf::Sprite> Game::getGreenFrames(std::vector<sf::Vector2f> frameVectors)
+std::vector<sf::Sprite> Game::getGreenFrames(std::vector<sf::Vector2f> &frameVectors)
 {
 	std::vector<sf::Sprite> greenFrames;
 
@@ -227,7 +227,7 @@ std::vector<sf::Sprite> Game::getGreenFrames(std::vector<sf::Vector2f> frameVect
 }
 
 
-std::vector<sf::Sprite> Game::getRedFrames(std::vector<sf::Vector2f> frameVectors)
+std::vector<sf::Sprite> Game::getRedFrames(std::vector<sf::Vector2f> &frameVectors)
 {
 	std::vector<sf::Sprite> redFrames;
 

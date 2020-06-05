@@ -14,7 +14,7 @@ Spot Board::getBox(int y, int x)
 }
 
 
-bool Board::cleanEndField(Spot end)
+bool Board::cleanEndField(Spot &end)
 {
 	if(!this->getBox(end.x,end.y).isEmpty())
 	{
@@ -42,7 +42,7 @@ std::vector<sf::FloatRect> Board::initializeSwapVectors()
 	return vectors;
 }
 
-void Board::chooseFigureToSwap(Figure* fig, int &number)
+void Board::chooseFigureToSwap(Figure* &fig, int &number)
 {
 	sf::RenderWindow wind(sf::VideoMode(224,56),"Pawn exchange");
 	sf::Texture texture;
@@ -204,8 +204,6 @@ void Board::moveFigure(Move &move, Figure *&f)   /* utworzenie calkowicie nowego
 {
 	Spot end = move.getEnd();
 	Spot begin = move.getBegin();
-
-	std::cout << "nie wyrzuca" << std::endl;
 	
 	delete boxes[end.x][end.y]->getFigure();      /* wyczyszczenie poczatkowego pola */
 	delete boxes[begin.x][begin.y]->getFigure();  /* wyczyszczenie koncowego pola */
@@ -273,7 +271,6 @@ void Board::moveFigure(Move &move, Figure *&f)   /* utworzenie calkowicie nowego
 		}
 	}
 
-	std::cout << "wyrzuca" << std::endl;
 	boxes[begin.x][begin.y]->figure = NULL;  
 
 
@@ -450,7 +447,7 @@ void Board::setFrames()
 	
 	this->yellowFrame.setScale(56.0/210.0, 56.0/208.0);
 	this->redFrame.setScale(56.0/212.0, 56.0/212.0);
-	this->greenFrame.setScale(56.0/210.0, 56.0/208.0);
+	this->greenFrame.setScale(56.0/211.0, 56.0/214.0);
 
 	this->yellowFrame.setPosition(1000,1000);
 	this->redFrame.setPosition(1000,1000);
@@ -459,7 +456,7 @@ void Board::setFrames()
 }
 
 
-sf::Vector2f Board::adjustFrameSize(sf::Vector2f vector)
+sf::Vector2f Board::adjustFrameSize(sf::Vector2f &vector)
 {
     vector.x = vector.x - 28;
     vector.y = vector.y - 28;    
