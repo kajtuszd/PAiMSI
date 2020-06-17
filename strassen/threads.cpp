@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
-
+#include <functional>
 
 
 
@@ -254,20 +254,21 @@ void strassen(std::vector< std::vector<int> > &mat2, std::vector< std::vector<in
 		thread_Data adds[6];
 		thread_Data subs[4];
 
-		adds[0] = thread_Data{newSize, a11, a22, r1};
-		adds[1] = thread_Data{newSize, b11, b22, r2};
-		adds[2] = thread_Data{newSize, a21, a22, r3};
-		adds[3] = thread_Data{newSize, a11, a12, r4};
-		adds[4] = thread_Data{newSize, b11, b12, r5};
-		adds[5] = thread_Data{newSize, b21, b22, r6};
+		adds[0] = thread_Data{newSize, a11, a22, std::ref(r1)};
+		adds[1] = thread_Data{newSize, b11, b22, std::ref(r2)};
+		adds[2] = thread_Data{newSize, a21, a22, std::ref(r3)};
+		adds[3] = thread_Data{newSize, a11, a12, std::ref(r4)};
+		adds[4] = thread_Data{newSize, b11, b12, std::ref(r5)};
+		adds[5] = thread_Data{newSize, b21, b22, std::ref(r6)};
 
-		subs[0] = thread_Data{newSize, b12, b22, r7};
-		subs[1] = thread_Data{newSize, b21, b11, r8};
-		subs[2] = thread_Data{newSize, a21, a11, r9};
-		subs[3] = thread_Data{newSize, a12, a22, r10};
+		subs[0] = thread_Data{newSize, b12, b22, std::ref(r7)};
+		subs[1] = thread_Data{newSize, b21, b11, std::ref(r8)};
+		subs[2] = thread_Data{newSize, a21, a11, std::ref(r9)};
+		subs[3] = thread_Data{newSize, a12, a22, std::ref(r10)};
 
 		pthread_t adders[6];
 		pthread_t subers[4];
+
 
 		for (int i = 0; i < 6; ++i)
 		{
