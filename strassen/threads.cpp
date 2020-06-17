@@ -5,12 +5,12 @@
 
 
 
-struct threadData
+typedef struct threadData
 {
 	int n;
 	std::vector< std::vector<int> > mat1, mat2, result;
 
-};
+}thread_Data;
 
 
 
@@ -149,9 +149,11 @@ std::vector< std::vector<int> > multiply(std::vector< std::vector<int> > &mat2, 
 	return mat3;
 }
 
+
+
 void *add_Thread(void *arg)
 {
-	struct threadData *data = (threadData*)arg;
+	thread_Data *data = (threadData*)arg;
 	for (int i = 0; i < data->n; ++i)
 	{
 		for (int j = 0; j < data->n; ++j)
@@ -160,12 +162,14 @@ void *add_Thread(void *arg)
 		}
 	}
 	pthread_exit(0);
-
 }
+
+
 
 void *sub_Thread(void *arg)
 {
-	struct threadData *data = (threadData*)arg;
+	thread_Data *data = (threadData*)arg;
+
 	for (int i = 0; i < data->n; ++i)
 	{
 		for (int j = 0; j < data->n; ++j)
@@ -173,6 +177,7 @@ void *sub_Thread(void *arg)
 			data->result[i][j] = data->mat1[i][j] - data->mat2[i][j];
 		}
 	}
+
 	pthread_exit(0);
 }
 
@@ -246,20 +251,20 @@ void strassen(std::vector< std::vector<int> > &mat2, std::vector< std::vector<in
 		}
 
 
-		struct threadData adds[6];
-		struct threadData subs[4];
+		thread_Data adds[6];
+		thread_Data subs[4];
 
-		adds[0] = (struct threadData){mat1 = a11 , mat2 = a22, result = r1, n = newSize};
-		adds[1] = (struct threadData){mat1 = b11 , mat2 = b22, result = r2, n = newSize};
-		adds[2] = (struct threadData){mat1 = a21 , mat2 = a22, result = r3, n = newSize};
-		adds[3] = (struct threadData){mat1 = a11 , mat2 = a12, result = r4, n = newSize};
-		adds[4] = (struct threadData){mat1 = b11 , mat2 = b12, result = r5, n = newSize};
-		adds[5] = (struct threadData){mat1 = b21 , mat2 = b22, result = r6, n = newSize};
+		adds[0] = thread_Data{newSize, a11, a22, r1};
+		adds[1] = thread_Data{newSize, b11, b22, r2};
+		adds[2] = thread_Data{newSize, a21, a22, r3};
+		adds[3] = thread_Data{newSize, a11, a12, r4};
+		adds[4] = thread_Data{newSize, b11, b12, r5};
+		adds[5] = thread_Data{newSize, b21, b22, r6};
 
-		subs[0] = (struct threadData){mat1 = b12 , mat2 = b22, result = r7, n = newSize};
-		subs[1] = (struct threadData){mat1 = b21 , mat2 = b11, result = r8, n = newSize};
-		subs[2] = (struct threadData){mat1 = a21 , mat2 = a11, result = r9, n = newSize};
-		subs[3] = (struct threadData){mat1 = a12 , mat2 = a22, result = r10, n = newSize};
+		subs[0] = thread_Data{newSize, b12, b22, r7};
+		subs[1] = thread_Data{newSize, b21, b11, r8};
+		subs[2] = thread_Data{newSize, a21, a11, r9};
+		subs[3] = thread_Data{newSize, a12, a22, r10};
 
 		pthread_t adders[6];
 		pthread_t subers[4];
@@ -283,6 +288,8 @@ void strassen(std::vector< std::vector<int> > &mat2, std::vector< std::vector<in
 	    {
       		pthread_join(subers[i], NULL);       
 	    }
+
+
 
 		/*  m1 = (a11+a22)*(b11+b22)  */
 
@@ -371,9 +378,6 @@ int main()
 	mat1 = GenerateMatrix(rows1,columns1);
 	mat2 = GenerateMatrix(rows2,columns2);
 	result = GenerateMatrix(rows2,columns2,0);
-
-//	unsigned int n = std::thread::hardware_concurrency();
-//    std::cout << n << " concurrent threads are supported.\n";
 
 	PrintMatrix(mat1,nextPower);
 	PrintMatrix(mat2,nextPower);
