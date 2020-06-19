@@ -379,6 +379,8 @@ int main()
 	int columns2 = rows1;
 	int rows2 = columns1;
 
+
+
 	int maxNumber = findLonger(columns1,rows1);
 	int nextPower = findNearestPower(maxNumber);
 
@@ -389,10 +391,17 @@ int main()
 	PrintMatrix(mat1,nextPower);
 	PrintMatrix(mat2,nextPower);
 
+	if(columns1 == 1 &&  rows1 == 1)
+	{
+		std::cout << mat1[0][0] * mat2[0][0] << std::endl;
+	}
+	else
+	{
+		strassen(mat1,mat2,result);
 
-	strassen(mat1,mat2,result);
+		PrintMatrix(result,nextPower);
+	}
 
-	PrintMatrix(result,nextPower);
 
 
 
