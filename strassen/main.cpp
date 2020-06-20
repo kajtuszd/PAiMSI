@@ -1,5 +1,4 @@
 #include <iostream>
-#include <thread>
 #include <vector>
 
 
@@ -194,25 +193,6 @@ void strassen(std::vector< std::vector<int> > &mat2, std::vector< std::vector<in
 				b22[i][j] = mat2[i + newSize][j + newSize];
 			}
 		}
-		// std::cout << "podzielone macierze" << std::endl;		
-		// std::cout << "a11" << std::endl;		
-		// PrintMatrix(a11,newSize);
-		// std::cout << "a12" << std::endl;		
-		// PrintMatrix(a12,newSize);
-		// std::cout << "a21" << std::endl;		
-		// PrintMatrix(a21,newSize);
-		// std::cout << "a22" << std::endl;		
-		// PrintMatrix(a22,newSize);
-
-		// std::cout << "b11" << std::endl;		
-		// PrintMatrix(b11,newSize);
-		// std::cout << "b12" << std::endl;		
-		// PrintMatrix(b12,newSize);
-		// std::cout << "b21" << std::endl;		
-		// PrintMatrix(b21,newSize);
-		// std::cout << "b22" << std::endl;		
-		// PrintMatrix(b22,newSize);
-
 
 		/*  m1 = (a11+a22)*(b11+b22)  */
 
@@ -251,7 +231,6 @@ void strassen(std::vector< std::vector<int> > &mat2, std::vector< std::vector<in
 		auto sum_i = std::move(subtract(a12,a22));
 		auto sum_j = std::move(add(b21,b22));
 		strassen(sum_j,sum_i,m7);
-
 
 
 		/* calculating result matrix */
@@ -313,9 +292,6 @@ int main()
 	mat2 = GenerateMatrix(rows2,columns2);
 	result = GenerateMatrix(rows2,columns2,0);
 
-//	unsigned int n = std::thread::hardware_concurrency();
-//    std::cout << n << " concurrent threads are supported.\n";
-
 	PrintMatrix(mat1,nextPower);
 	PrintMatrix(mat2,nextPower);
 
@@ -327,11 +303,3 @@ int main()
 
 
 }
-
-
-
-
-
-
-
-
