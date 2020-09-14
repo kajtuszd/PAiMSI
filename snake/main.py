@@ -3,7 +3,6 @@ from apple import Apple
 from snake import Snake
 from game import Game
 
-
 pygame.init()
 pygame.font.init()
 font = pygame.font.SysFont('dejavuserif', 22, True, True)
@@ -25,12 +24,14 @@ game = Game()
 FPS = 8
 apple_collected = False
 apple.spawn()
-direction = [move_offset, 0]
+direction = [0, 0]
 
 apple_sprite = pygame.sprite.Group()
 apple_sprite.add(apple)
 
-i=0
+if not game.render_welcome_view(screen):
+    pygame.quit()
+    exit()
 
 while not game_over:
 
@@ -92,5 +93,11 @@ while not game_over:
 
     if(snake.is_collision()):
         game_over = True
+
+    if game_over:
+        if game.render_exit_view(screen, snake.score):
+            game_over = False
+            snake = Snake()
+            direction = [0, 0]
 
 pygame.quit()
