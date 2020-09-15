@@ -29,7 +29,7 @@ direction = [0, 0]
 apple_sprite = pygame.sprite.Group()
 apple_sprite.add(apple)
 
-if not game.render_welcome_view(screen):
+if not game.render_welcome_view(screen, snake):
     pygame.quit()
     exit()
 
@@ -98,6 +98,7 @@ while not game_over:
         if game.render_exit_view(screen, snake.score):
             game_over = False
             snake = Snake()
+            game.render_welcome_view(screen,snake)
             direction = [0, 0]
 
 pygame.quit()

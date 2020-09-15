@@ -1,6 +1,7 @@
 import pygame
 
 (s_width, s_height) = (30,30)
+
 GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 BLUE = (0, 0, 255)
@@ -9,8 +10,8 @@ class Snake(pygame.sprite.Sprite):
 
     rect = []
     image = []
-    yellow_img = pygame.Surface((s_width,s_height))
-    yellow_img.fill(BLUE)
+    tail_img = pygame.Surface((s_width,s_height))
+    tail_img.fill(BLUE)
 
     green_img = pygame.Surface((s_width, s_height))
     green_img.fill(GREEN)
@@ -26,12 +27,12 @@ class Snake(pygame.sprite.Sprite):
     def increase(self):
         self.score += 1
         self.length += 1
-        self.rect.append(pygame.Rect(self.yellow_img.get_rect()))
+        self.rect.append(pygame.Rect(self.tail_img.get_rect()))
 
     def draw(self, surface):
         if self.length > 0:
             for i in range(1, self.length):
-                surface.blit(self.yellow_img,(self.rect[i].x, self.rect[i].y))
+                surface.blit(self.tail_img,(self.rect[i].x, self.rect[i].y))
         surface.blit(self.green_img,(self.rect[0].x, self.rect[0].y))
 
 
