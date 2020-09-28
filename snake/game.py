@@ -1,15 +1,18 @@
-import pygame
+import pygame, os
+from leaderboard import Leaderboard
 
 GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
-(f_width, f_height) = (600,600)
+(f_width, f_height) = (600, 600)
+(w_width, w_height) = (300, 100)
 
 class Game(pygame.sprite.Sprite):
 
     def __init__(self):
+        self.board = Leaderboard()
         pygame.sprite.Sprite.__init__(self)
 
     def draw_frame(self, screen):
@@ -29,6 +32,40 @@ class Game(pygame.sprite.Sprite):
                         flag = False
                         return False
 
+    def render_leaderboard(self, screen):
+        screen.fill((0, 0, 0))
+        font = pygame.font.SysFont('dejavuserif', 30, True, True)
+        flag = True
+        while flag:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
+                        flag = False
+
+                    if event.key == pygame.K_r:
+                        screen.fill((0, 0, 0))
+                        self.board.reset()
+
+            self.board.file = open("leaderboard.txt", "r")
+            i = 110
+            text = font.render("Leaderboard: ", False, (GREEN), (0, 0, 0))
+            screen.blit(text, (50, 50))
+            text1 = font.render("R - reset results ", False, (GREEN), (0, 0, 0))
+            screen.blit(text1, (50, 450))
+            for line in self.board.file:
+                text = font.render(line[0: len(line)-1], False, (GREEN), (0, 0, 0))
+                screen.blit(text, (50, i))
+                i += 50
+            pygame.display.flip()
+
+        self.board.file.close()
+        screen.fill((0, 0, 0))
+
+
     def render_welcome_view(self, screen, snake):
         screen.fill((0, 0, 0))
         font = pygame.font.SysFont('dejavuserif', 30, True, True)
@@ -36,7 +73,8 @@ class Game(pygame.sprite.Sprite):
         while flag:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return False
+                    pygame.quit()
+                    exit()
 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -46,6 +84,9 @@ class Game(pygame.sprite.Sprite):
                     elif event.key == pygame.K_s:
                         self.render_settings_view(screen, snake)
 
+                    elif event.key == pygame.K_l:
+                        self.render_leaderboard(screen)
+
                     elif event.key == pygame.K_ESCAPE:
                         flag = False
                         return False
@@ -54,13 +95,14 @@ class Game(pygame.sprite.Sprite):
             text1 = font.render('ESC - Exit', False, (GREEN), (0, 0, 0))
             text2 = font.render('P - Pause', False, (GREEN), (0, 0, 0))
             text3 = font.render('S - Go to settings', False, (GREEN), (0, 0, 0))
-
-            text4 = font.render('Press ENTER to start game', False, (GREEN), (0, 0, 0))
+            text4 = font.render('L - Check leaderboard', False, (GREEN), (0, 0, 0))
+            text5 = font.render('Press ENTER to start game', False, (GREEN), (0, 0, 0))
             screen.blit(text0, (50, 120))
             screen.blit(text1, (50, 170))
             screen.blit(text2, (50, 220))
             screen.blit(text3, (50, 300))
-            screen.blit(text4, (50, 380))
+            screen.blit(text4, (50, 350))
+            screen.blit(text5, (50, 430))
             pygame.display.flip()
 
     def render_exit_view(self, screen, score):
@@ -70,7 +112,9 @@ class Game(pygame.sprite.Sprite):
         while flag:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    flag = False
+                    pygame.quit()
+                    exit()
+
 
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -82,7 +126,7 @@ class Game(pygame.sprite.Sprite):
             text2 = font.render('Press ESC to exit', False, (GREEN), (0, 0, 0))
             text3 = font.render('Press ENTER to play again', False, (GREEN), (0, 0, 0))
 
-            screen.blit(text1, (100, 220))
+            screen.blit(text1, (50, 200))
             screen.blit(text2, (50, 270))
             screen.blit(text3, (50, 320))
 

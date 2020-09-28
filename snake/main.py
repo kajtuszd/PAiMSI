@@ -21,7 +21,7 @@ move_offset = 30
 snake = Snake()
 apple = Apple()
 game = Game()
-FPS = 8
+FPS = 10
 apple_collected = False
 apple.spawn()
 direction = [0, 0]
@@ -37,7 +37,8 @@ while not game_over:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            game_over = True
+            pygame.quit()
+            exit()
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -46,8 +47,7 @@ while not game_over:
             if event.key == pygame.K_p:
                 wait = True
 
-
-            elif event.key == pygame.K_UP and direction != [0, move_offset]:  # equalise Y
+            if event.key == pygame.K_UP and direction != [0, move_offset]:  # equalise Y
                 direction = [0, -move_offset]
 
             elif event.key == pygame.K_DOWN and direction != [0, -move_offset]:  # equalise Y
@@ -58,6 +58,7 @@ while not game_over:
 
             elif event.key == pygame.K_RIGHT and direction != [-move_offset, 0]:  # equalise X
                 direction = [move_offset, 0]
+
 
     text = font.render('Score: {0}'.format(str(snake.score)), False, (0, 0, 0), (255, 255, 255))
 
@@ -90,11 +91,13 @@ while not game_over:
             game_over = True
         else:
             wait = False
+            clock.tick(FPS)
 
-    if(snake.is_collision()):
+    if snake.is_collision():
         game_over = True
 
     if game_over:
+        game.board.update_leaderboard(snake.score, screen)
         if game.render_exit_view(screen, snake.score):
             game_over = False
             snake = Snake()

@@ -5,16 +5,17 @@ import pygame
 GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 BLUE = (0, 0, 255)
+AZURE = (51, 255, 255)
 
 class Snake(pygame.sprite.Sprite):
 
     rect = []
     image = []
-    tail_img = pygame.Surface((s_width,s_height))
+    tail_img = pygame.Surface((s_width, s_height))
     tail_img.fill(BLUE)
 
     green_img = pygame.Surface((s_width, s_height))
-    green_img.fill(GREEN)
+    green_img.fill(AZURE)
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
